@@ -12,6 +12,21 @@ import(
 )
 
 func main(){
+	if len(os.Args) < 5 {
+		message := ""
+		switch(len(os.Args)){
+			case 1:
+				message = "Missing 4 args: [1] Google Cloud Project Name [2] Filepath to Google Application Credentials [3] SQL statement [4] Output file"
+			case 2:
+				message = "Missing 3 args: [2] Filepath to Google Application Credentials [3] SQL statment [4] Output file"
+			case 3:
+				message = "Missing 2 args: [3] SQL statement [4] Output file"
+			case 4:
+				message = "Missing 1 arg: [4] Output file"
+		}
+		log.Fatal(message)
+	}
+
 	os.Setenv("GOOGLE_CLOUD_PROJECT",os.Args[1])
 	os.Setenv("GOOGLE_APPLICATION_CREDENTIALS",os.Args[2])
 	sql := os.Args[3]
