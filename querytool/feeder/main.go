@@ -173,6 +173,8 @@ func processConfigs(configfiles []string, sources []qt.Source) []qt.Job {
 			continue
 		}
 
+		// Note: The "type" will be a broad grouping for many types of data sources
+		// The "type" will need to be included in the .conf json file, along with the specified fields for the specific configuration type object
 		var configtype string
 		err = json.Unmarshal(*configmap["type"],&configtype)
 		if err != nil{
@@ -199,6 +201,7 @@ func processConfigs(configfiles []string, sources []qt.Source) []qt.Job {
 				}
 
 				job.Queries = RDBobj.Queries
+				job.IsDist = false
 			case "DFS":
 				var DFSobj qt.DFSConfig
 				if err := json.Unmarshal(contents, &DFSobj); err != nil {
@@ -217,6 +220,7 @@ func processConfigs(configfiles []string, sources []qt.Source) []qt.Job {
 
 				job.Queries = DFSobj.Queries
 				job.Tables = DFSobj.Tables
+				job.IsDist = true
 			default:
 				log.Println("Error with config file: ",config,". Please provide a valid configuration type: RDB, DFS")
 				continue
